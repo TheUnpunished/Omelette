@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<SplitPane dividerPositions="0.07742715692218022" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="600.0" prefWidth="900.0" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xyz.unpunished.controller.OmeletteController">
+   <items>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Graph">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SplitPane layoutX="71.0" layoutY="66.0" prefHeight="200.0" prefWidth="200.0" />
+                     </children></AnchorPane>
+            </content>
+               <content>
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                     <items>
+                        <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0">
+                           <items>
+                              <ScrollPane>
+                                <content>
+                                  <AnchorPane fx:id="objectBackground" minHeight="495.0" minWidth="645.0" />
+                                </content>
+                              </ScrollPane>
+                              <ScrollPane maxWidth="250.0" minWidth="250.0" prefWidth="250.0">
+                                <content>
+                                  <AnchorPane maxWidth="234.0" minWidth="234.0" prefWidth="234.0">
+                                       <children>
+                                          <Accordion fx:id="variableAccordion" maxWidth="234.0" minWidth="200.0" prefWidth="234.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children>
+                                    </AnchorPane>
+                                </content>
+                              </ScrollPane>
+                           </items>
+                        </SplitPane>
+                        <AnchorPane maxHeight="40.0" minHeight="40.0">
+                           <children>
+                              <Slider fx:id="scaleSlider" blockIncrement="0.05" layoutX="37.0" layoutY="13.0" majorTickUnit="0.5" max="1.0" minorTickCount="0" prefWidth="220.0" showTickMarks="true" value="1.0" AnchorPane.bottomAnchor="11.926" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="11.926" />
+                           </children>
+                        </AnchorPane>
+                     </items>
+                  </SplitPane>
+               </content>
+          </Tab>
+          <Tab text="Text">
+               <content>
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+                    <items>
+                        <TextArea prefHeight="200.0" prefWidth="200.0" />
+                      <AnchorPane maxHeight="40.0" minHeight="40.0" />
+                    </items>
+                  </SplitPane>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </items>
+</SplitPane>
