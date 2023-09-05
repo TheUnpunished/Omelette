@@ -26,6 +26,7 @@ hs_err_pid*
 # Omelette specific #
 /temp
 *.xml
+!pom.xml
 
 # IntelliJ IDEA #
 /.idea
