@@ -9,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import org.jdom2.Document;
 import xyz.unpunished.util.DocumentManager;
