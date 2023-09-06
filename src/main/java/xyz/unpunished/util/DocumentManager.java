@@ -9,7 +9,10 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
@@ -32,20 +35,23 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import xyz.unpunished.model.Delta;
 import xyz.unpunished.model.Tile;
+
 @Getter
 @Setter
 public class DocumentManager {
     
-    private ArrayList tiles = new ArrayList();
+    private ArrayList<Tile> tiles = new ArrayList();
     private AnchorPane backgroundPane;
     private Accordion variableAccordion;
     private Slider scaleSlider;
+    private AnchorPane variablePane;
     
     public DocumentManager(AnchorPane backgroundPane,
-            Accordion variableAccordion, Slider scaleSlider){
+            Accordion variableAccordion, Slider scaleSlider, AnchorPane variablePane){
         this.backgroundPane = backgroundPane;
         this.scaleSlider = scaleSlider;
         this.variableAccordion = variableAccordion;
+        this.variablePane = variablePane;
     }
     
     public void initManager(){
@@ -96,11 +102,13 @@ public class DocumentManager {
                 // object stuff first
                 {
                     AnchorPane aPane = new AnchorPane();
-                    aPane.setMaxWidth(233);
                     GridPane gPane = new GridPane();
-                    gPane.setVgap(5);
-                    gPane.setPadding(new Insets(5, 5, 5, 5));
-                    gPane.setMaxWidth(233);
+                    gPane.setVgap(5.0);
+                    gPane.setHgap(2.5);
+                    AnchorPane.setLeftAnchor(gPane, -5.0);
+                    AnchorPane.setRightAnchor(gPane, -5.0);
+                    AnchorPane.setTopAnchor(gPane, -3.0);
+                    AnchorPane.setBottomAnchor(gPane, 0.0);
                     int i = 0;
                     for(Attribute attr: element.getAttributes()){
                         TextField attrNameField 
@@ -115,6 +123,19 @@ public class DocumentManager {
                                 .addListener((ov, oav, nav) -> {
                             attr.setValue(nav);
                         });
+                        attrNameField.prefWidthProperty()
+                                .bind(variablePane.prefWidthProperty()
+                                .multiply(0.65));
+                        attrNameField.setMaxWidth(250);
+                        attrNameField.setAlignment(Pos.CENTER_RIGHT);
+                        GridPane.setHalignment(attrNameField, HPos.RIGHT);
+                        GridPane.setValignment(attrNameField, VPos.CENTER);
+                        attrValueField.prefWidthProperty()
+                                .bind(variablePane.prefWidthProperty()
+                                .multiply(0.9));
+                        attrValueField.setAlignment(Pos.CENTER_LEFT);
+                        GridPane.setHalignment(attrValueField, HPos.RIGHT);
+                        GridPane.setValignment(attrValueField, VPos.CENTER);
                         gPane.add(attrNameField, 0, i);
                         gPane.add(attrValueField, 1, i++);
                     }
@@ -125,21 +146,37 @@ public class DocumentManager {
                 // now onto all elements inside of object
                 for(Element child: element.getChildren()){
                     AnchorPane aPane = new AnchorPane();
-                    aPane.setMaxWidth(233);
                     GridPane gPane = new GridPane();
                     TitledPane elemTPane 
                             = new TitledPane(child.getName(),
                             aPane);
-                    gPane.setVgap(5);
-                    gPane.setPadding(new Insets(5, 5, 5, 5));
-                    gPane.setMaxWidth(233);
+                    gPane.setVgap(5.0);
+                    gPane.setHgap(2.5);
+                    AnchorPane.setLeftAnchor(gPane, -5.0);
+                    AnchorPane.setRightAnchor(gPane, -5.0);
+                    AnchorPane.setTopAnchor(gPane, -3.0);
+                    AnchorPane.setBottomAnchor(gPane, 0.0);
                     Label nameLabel = new Label();
                     nameLabel.setText("name");
+                    nameLabel.setPrefWidth(Integer.MAX_VALUE);
+                    nameLabel.prefWidthProperty()
+                                .bind(variablePane.prefWidthProperty()
+                                .multiply(0.65));
+                    nameLabel.setMaxWidth(250);
+                    nameLabel.setAlignment(Pos.CENTER_RIGHT);
+                    GridPane.setHalignment(nameLabel, HPos.RIGHT);
+                    GridPane.setValignment(nameLabel, VPos.CENTER);
                     TextField nameField = new TextField(child.getName());
                     nameField.textProperty().addListener((ov, oan, nan) -> {
                         child.setName(nan);
                         elemTPane.setText(nan);
                     });
+                    nameField.prefWidthProperty()
+                                .bind(variablePane.prefWidthProperty()
+                                .multiply(0.9));
+                    nameField.setAlignment(Pos.CENTER_LEFT);
+                    GridPane.setHalignment(nameField, HPos.RIGHT);
+                    GridPane.setValignment(nameField, VPos.CENTER);
                     gPane.add(nameLabel, 0, 0);
                     gPane.add(nameField, 1, 0);
                     int i = 1;
@@ -156,6 +193,19 @@ public class DocumentManager {
                                 .addListener((ov, oav, nav) -> {
                             attr.setValue(nav);
                         });
+                        attrNameField.prefWidthProperty()
+                                .bind(variablePane.prefWidthProperty()
+                                .multiply(0.65));
+                        attrNameField.setMaxWidth(250);
+                        attrNameField.setAlignment(Pos.CENTER_RIGHT);
+                        GridPane.setHalignment(attrNameField, HPos.RIGHT);
+                        GridPane.setValignment(attrNameField, VPos.CENTER);
+                        attrValueField.prefWidthProperty()
+                                .bind(variablePane.prefWidthProperty()
+                                .multiply(0.9));
+                        attrValueField.setAlignment(Pos.CENTER_LEFT);
+                        GridPane.setHalignment(attrValueField, HPos.RIGHT);
+                        GridPane.setValignment(attrValueField, VPos.CENTER);
                         gPane.add(attrNameField, 0, i);
                         gPane.add(attrValueField, 1, i++);
                     }
@@ -179,14 +229,16 @@ public class DocumentManager {
             });
             tPane.setOnMouseReleased((MouseEvent mouseEvent) -> {
                 tPane.setCursor(Cursor.HAND);
-                tPane.setDisable(false);
+                for(Tile tile: tiles)
+                    tile.getAttachedPane().setDisable(false);
             });
             tPane.setOnMouseDragged((MouseEvent mouseEvent) -> {
                 double scaleVal = scaleSlider.getValue() * 0.9 + 0.1;
                 tPane.setLayoutX(mouseEvent.getSceneX() / scaleVal + dragDelta.getX());
                 tPane.setLayoutY(mouseEvent.getSceneY() / scaleVal + dragDelta.getY());
                 tPane.setCursor(Cursor.MOVE);
-                tPane.setDisable(true);
+                for(Tile tile: tiles)
+                    tile.getAttachedPane().setDisable(true);
             });
             tPane.setOnMouseEntered((MouseEvent mouseEvent) -> {
                 tPane.setCursor(Cursor.HAND);
